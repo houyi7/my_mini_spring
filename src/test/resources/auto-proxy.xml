@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	         http://www.springframework.org/schema/beans/spring-beans.xsd
+		 http://www.springframework.org/schema/context
+		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <bean id="worldService" class="testclass.WorldServiceImpl"/>
+
+
+    <bean class="com.springframework.aop.framework.DefaultAdvisorAutoProxyCreator"/>
+    <bean id="pointcutAdvisor" class="com.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor">
+            <property name="advice" ref="methodInterceptor"/>
+            <property name="expression" value="execution(* testclass.WorldService.explode(..))"/>
+     </bean>
+
+    <bean id="methodInterceptor" class="com.springframework.adapter.AfterReturningAdviceInterceptor">
+        <property name="advice" ref="afterAdvice"/>
+    </bean>
+    <bean id="afterAdvice" class="testclass.WorldServiceAfterReturnAdvice"/>
+</beans>
